@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Comelona Onde Makoy | Menú Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --rojo: #D31313;
+            --amarillo: #FFC107;
+            --oscuro: #121212;
+            --blanco: #FFFFFF;
+            --gris-fondo: #F9FAFB;
+            --texto-principal: #1F2937;
+            --texto-mutado: #6B7280;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--gris-fondo); color: var(--texto-principal); padding-bottom: 7rem; }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--rojo) 60%, #990000 100%);
+            color: var(--blanco);
+            text-align: center;
+            padding: 3.5rem 1rem;
+            border-bottom: 6px solid var(--amarillo);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .logo-circulo {
+            background-color: var(--blanco);
+            width: 85px; height: 85px;
+            border-radius: 50%;
+            margin: 0 auto 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            border: 4px solid var(--amarillo);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .logo-circulo i { color: var(--rojo); font-size: 2.2rem; }
+        header h1 {
+            font-size: 2.5rem; font-weight: 700; color: var(--amarillo);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.25);
+        }
+        header p { font-size: 1.1rem; opacity: 0.95; margin-bottom: 1.5rem; }
+        .btn-ordenar-header {
+            display: inline-block; background-color: var(--amarillo);
+            color: var(--oscuro); padding: 0.8rem 2rem; border-radius: 50px;
+            text-decoration: none; font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-ordenar-header:hover { background-color: var(--blanco); color: var(--rojo); transform: scale(1.03); }
+
+        /* NAV STICKY */
+        .nav-menu {
+            position: sticky; top: 0; z-index: 900;
+            background: #fff; border-bottom: 2px solid #E5E7EB;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow-x: auto; white-space: nowrap; padding: 0.6rem 1rem;
+            display: flex; gap: 0.5rem;
+        }
+        .nav-menu a {
+            display: inline-block; padding: 0.4rem 1rem;
+            background: var(--gris-fondo); color: var(--texto-principal);
+            border-radius: 50px; text-decoration: none; font-size: 0.82rem; font-weight: 600;
+            border: 1.5px solid #E5E7EB; transition: all 0.18s;
+        }
+        .nav-menu a:hover { background: var(--rojo); color: #fff; border-color: var(--rojo); }
+
+        /* CONTAINER */
+        .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+        /* SECTION TITLES */
+        .seccion-titulo {
+            display: flex; align-items: center; gap: 12px;
+            margin: 3rem 0 1.5rem;
+            border-bottom: 3px solid #E5E7EB; padding-bottom: 0.5rem;
+        }
+        .seccion-titulo i { color: var(--rojo); font-size: 1.6rem; }
+        .seccion-titulo h2 {
+            font-size: 1.6rem; color: var(--rojo);
+            text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;
+        }
+
+        /* GRID */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* CARD */
+        .plato-tarjeta {
+            background-color: var(--blanco);
+            border-radius: 12px; padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #E5E7EB; border-top: 4px solid var(--rojo);
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .plato-tarjeta:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+        .plato-info h3 { font-size: 1.05rem; color: var(--texto-principal); font-weight: 600; margin-bottom: 0.4rem; }
+        .plato-info .descripcion { font-size: 0.88rem; color: var(--texto-mutado); line-height: 1.45; margin-bottom: 1rem; }
+        .plato-precio { font-size: 1.25rem; font-weight: 700; color: var(--rojo); margin-top: auto; }
+
+        /* BADGE PRECIOS (batidos, canastas) */
+        .precios-flex { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; }
+        .badge-precio {
+            background-color: #F3F4F6; padding: 0.4rem 0.8rem;
+            border-radius: 6px; font-size: 0.85rem; font-weight: 600; text-align: center;
+        }
+        .badge-precio .tipo { color: var(--texto-mutado); display: block; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 2px; }
+        .badge-precio .monto { color: var(--rojo); font-size: 1rem; font-weight: 700; }
+
+        /* BADGE NUEVO */
+        .badge-nuevo {
+            display: inline-block; background: var(--amarillo);
+            color: #000; font-size: 0.65rem; font-weight: 700;
+            padding: 1px 7px; border-radius: 20px;
+            margin-left: 6px; vertical-align: middle; letter-spacing: 0.5px;
+        }
+
+        /* BARRA INFERIOR */
+        .barra-contacto {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background-color: #111827; color: var(--blanco);
+            padding: 0.9rem 1rem;
+            display: flex; justify-content: space-around; align-items: center;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.15); z-index: 1000;
+        }
+        .contacto-info { display: flex; flex-direction: column; }
+        .contacto-info .tagline { font-size: 0.75rem; color: var(--amarillo); text-transform: uppercase; font-weight: 600; }
+        .contacto-info .telefono { font-size: 1.1rem; font-weight: 700; }
+        .btn-whatsapp-flotante {
+            background-color: #25D366; color: var(--blanco);
+            padding: 0.7rem 1.5rem; border-radius: 50px; text-decoration: none;
+            font-weight: 600; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 10px rgba(37,211,102,0.3); transition: background-color 0.2s;
+        }
+        .btn-whatsapp-flotante:hover { background-color: #1ED760; }
+        .btn-facebook {
+            background:#1877F2; color:white; padding:0.7rem 1.5rem;
+            border-radius:50px; text-decoration:none; font-weight:600;
+            display:flex; align-items:center; gap:8px;
+        }
+
+        /* MAP */
+        .mapa-wrap { margin: 1.5rem 0; }
+        .mapa-wrap iframe { border-radius: 12px; border: 0; width: 100%; height: 380px; }
+
+        @media (max-width: 640px) {
+            header h1 { font-size: 1.8rem; }
+            .seccion-titulo h2 { font-size: 1.2rem; }
+            .barra-contacto { flex-direction: column; gap: 8px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-circulo"><i class="fa-solid fa-utensils"></i></div>
+    <h1>La Comelona Onde Makoy</h1>
+    <p><i class="fa-solid fa-phone"></i> Express y SINPE Móvil: 6226 - 4152</p>
+    <a href="https://wa.me/50662264152" class="btn-ordenar-header" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i> ¡Pedir por WhatsApp Ahora!
+    </a>
+</header>
+
+<!-- NAV RÁPIDA -->
+<nav class="nav-menu">
+    <a href="#antojos">🍟 Antojos</a>
+    <a href="#arroces">🍚 Arroces</a>
+    <a href="#sopas">🍲 Sopas</a>
+    <a href="#especiales">🍽️ Especiales</a>
+    <a href="#hamburguesas">🍔 Hamburguesas</a>
+    <a href="#helados">🍦 Helados</a>
+</nav>
+
+<div class="container">
+
+    <!-- ═══════════════════════════════════════════
+         ANTOJOS RÁPIDOS
+    ═══════════════════════════════════════════ -->
+    <div class="seccion-titulo" id="antojos">
+        <i class="fa-solid fa-fire-flame-curved"></i>
+        <h2>Antojos Rápidos</h2>
+    </div>
+    <div class="menu-grid">
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Quesadillas <span class="badge-nuevo">NUEVO</span></h3>
+                <p class="descripcion">Tortilla rellena de queso derretido y carne al gusto.</p>
+            </div>
+            <div class="plato-precio">¢5,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Papacoys <span class="badge-nuevo">NUEVO</span></h3>
+                <p class="descripcion">Papas estilo nachos cargadas con camarones frescos y aderezos especiales.</p>
+            </div>
+            <div class="plato-precio">¢6,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Salchicha Especial <span class="badge-nuevo">NUEVO</span></h3>
+                <p class="descripcion">Salchichas especiales acompañadas de papas y salsas de la casa.</p>
+            </div>
+            <div class="plato-precio">¢2,700</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Salchicha Especial Grande <span class="badge-nuevo">NUEVO</span></h3>
+                <p class="descripcion">Versión grande de nuestras salchichas especiales con más papas y salsas.</p>
+            </div>
+            <div class="plato-precio">¢3,700</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Salchipapas Grandes</h3>
+                <p class="descripcion">Abundante porción de papas fritas y salchichas acompañadas de salsas.</p>
+            </div>
+            <div class="plato-precio">¢2,700</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Salchipapa Pequeña</h3>
+                <p class="descripcion">Porción personal de nuestras tradicionales papas fritas con salchicha.</p>
+            </div>
+            <div class="plato-precio">¢1,700</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Salchipapa + Queso Pequeña</h3>
+                <p class="descripcion">Papas fritas y salchichas cubiertas de queso fundido.</p>
+            </div>
+            <div class="plato-precio">¢2,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Salchipapa + Queso Grande</h3>
+                <p class="descripcion">Porción gigante de salchipapas bañadas en abundante queso derretido.</p>
+            </div>
+            <div class="plato-precio">¢3,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Papas Fritas Grandes</h3>
+                <p class="descripcion">Papas de corte clásico, crujientes y en porción generosa.</p>
+            </div>
+            <div class="plato-precio">¢1,800</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Papas Fritas Pequeñas</h3>
+                <p class="descripcion">La porción individual ideal de nuestras crujientes papas fritas.</p>
+            </div>
+            <div class="plato-precio">¢1,200</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Nacho Pequeño <small>(Res o Pollo)</small></h3>
+                <p class="descripcion">Crujientes tortillas de maíz con frijoles, carne, queso y aderezos.</p>
+            </div>
+            <div class="plato-precio">¢3,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Nacho Grande <small>(Res o Pollo)</small></h3>
+                <p class="descripcion">Gran porción de nachos sumamente cargada, ideal para compartir.</p>
+            </div>
+            <div class="plato-precio">¢4,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Papanacho / Pata Nacho</h3>
+                <p class="descripcion">Combinación increíble de papas o patacón con estilo nacho.</p>
+            </div>
+            <div class="plato-precio">¢4,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Chalupas</h3>
+                <p class="descripcion">Tortilla crujiente con base de frijoles, carne, repollo y aderezos especiales.</p>
+            </div>
+            <div class="plato-precio">¢3,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Empanada Arreglada</h3>
+                <p class="descripcion">Empanada frita rellena, abierta y complementada con ensalada y salsas.</p>
+            </div>
+            <div class="plato-precio">¢2,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Empanada Sencilla</h3>
+                <p class="descripcion">La empanada frita tradicional rellena de tu ingrediente favorito.</p>
+            </div>
+            <div class="plato-precio">¢1,800</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Taco Tico de Res</h3>
+                <p class="descripcion">Taco enrollado costarricense relleno de res, repollo y salsas.</p>
+            </div>
+            <div class="plato-precio">¢2,600</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Taco Tico de Pollo</h3>
+                <p class="descripcion">Crujiente taco relleno de sabroso pollo mechado jugoso.</p>
+            </div>
+            <div class="plato-precio">¢2,400</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Patacones Arreglados</h3>
+                <p class="descripcion">Crujientes patacones con frijoles molidos, carne al gusto, ensalada y salsas.</p>
+            </div>
+            <div class="plato-precio">¢3,400</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Patacón Arreglado con Camarón</h3>
+                <p class="descripcion">Patacón gigante arreglado acompañado de abundantes camarones.</p>
+            </div>
+            <div class="plato-precio">¢4,400</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Orden de Patacones</h3>
+                <p class="descripcion">Porción de crujientes patacones dorados, ideales como acompañamiento.</p>
+            </div>
+            <div class="plato-precio">¢2,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Quesadillas <small>(Fast Food)</small></h3>
+                <p class="descripcion">Tortilla de trigo gigante tostada, rellena de abundante queso derretido y carne.</p>
+            </div>
+            <div class="plato-precio">¢4,200</div>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         ARROCES Y CASADOS
+    ═══════════════════════════════════════════ -->
+    <div class="seccion-titulo" id="arroces">
+        <i class="fa-solid fa-bowl-rice"></i>
+        <h2>Arroces y Casados</h2>
+    </div>
+    <div class="menu-grid">
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Arroz Cantonés</h3>
+                <p class="descripcion">Delicioso arroz salteado con el toque secreto tradicional de la casa.</p>
+            </div>
+            <div class="plato-precio">¢4,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Arroz con Cerdo</h3>
+                <p class="descripcion">Con jugosos trozos de cerdo seleccionados y sazonados.</p>
+            </div>
+            <div class="plato-precio">¢3,800</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Arroz con Pollo</h3>
+                <p class="descripcion">El clásico e infaltable arroz con pollo al mejor estilo costarricense.</p>
+            </div>
+            <div class="plato-precio">¢3,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Arroz con Camarón</h3>
+                <p class="descripcion">Preparado con camarones frescos de gran sabor.</p>
+            </div>
+            <div class="plato-precio">¢4,600</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Camarón con Arroz</h3>
+                <p class="descripcion">Especialidad premium cargada de abundante camarón.</p>
+            </div>
+            <div class="plato-precio">¢6,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Casados</h3>
+                <p class="descripcion">El almuerzo completo típico balanceado con el sabor de nuestro hogar.</p>
+            </div>
+            <div class="plato-precio">¢3,500</div>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SOPAS
+    ═══════════════════════════════════════════ -->
+    <div class="seccion-titulo" id="sopas">
+        <i class="fa-solid fa-bowl-food"></i>
+        <h2>Sopas</h2>
+    </div>
+    <div class="menu-grid">
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Sopa de Marisco en Leche</h3>
+                <p class="descripcion">Una cremosa e imponente sopa con mariscos frescos seleccionados, cocinada en leche.</p>
+            </div>
+            <div class="plato-precio">¢4,600</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Sopa de Marisco en Agua</h3>
+                <p class="descripcion">El sabor natural, puro y reconfortante del mar en un caldo sustancioso.</p>
+            </div>
+            <div class="plato-precio">¢4,000</div>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         PLATOS ESPECIALES
+    ═══════════════════════════════════════════ -->
+    <div class="seccion-titulo" id="especiales">
+        <i class="fa-solid fa-plate-wheat"></i>
+        <h2>Platos Especiales</h2>
+    </div>
+    <div class="menu-grid">
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Gordon Bleu</h3>
+                <p class="descripcion">Pechuga de pollo rellena, perfectamente empanizada y dorada.</p>
+            </div>
+            <div class="plato-precio">¢4,600</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Alitas Rellenas</h3>
+                <p class="descripcion">Crujientes alitas con un relleno único de la casa.</p>
+            </div>
+            <div class="plato-precio">¢4,600</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Alitas Normales</h3>
+                <p class="descripcion">Las alitas fritas clásicas, tostadas por fuera y jugosas por dentro.</p>
+            </div>
+            <div class="plato-precio">¢3,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Alitas (Orden de 12)</h3>
+                <p class="descripcion">Perfectas para disfrutar y compartir en cualquier momento.</p>
+            </div>
+            <div class="plato-precio">¢5,700</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Alitas (Orden de 24)</h3>
+                <p class="descripcion">El banquete definitivo para los verdaderos amantes de las alitas.</p>
+            </div>
+            <div class="plato-precio">¢10,700</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Filete de Pollo</h3>
+                <p class="descripcion">Pechuga tierna de pollo cocinada a la plancha o al gusto.</p>
+            </div>
+            <div class="plato-precio">¢3,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Filete de Pollo en Salsa Blanca</h3>
+                <p class="descripcion">Bañado en una cremosa y deliciosa salsa blanca artesanal.</p>
+            </div>
+            <div class="plato-precio">¢4,200</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Fajitas de Pollo</h3>
+                <p class="descripcion">Tiras de pechuga salteadas a la perfección con vegetales frescos.</p>
+            </div>
+            <div class="plato-precio">¢3,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Taco Tipo Mexicano</h3>
+                <p class="descripcion">Cargado con los mejores ingredientes y un toque de sazón espectacular.</p>
+            </div>
+            <div class="plato-precio">¢4,600</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Camarones Empanizados</h3>
+                <p class="descripcion">Crujientes camarones rebozados de textura dorada perfecta.</p>
+            </div>
+            <div class="plato-precio">¢5,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Camarones al Ajillo</h3>
+                <p class="descripcion">Bañados en una aromática y exquisita salsa de ajo y mantequilla.</p>
+            </div>
+            <div class="plato-precio">¢5,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Filete de Pescado</h3>
+                <p class="descripcion">Filete fresco cocinado de forma jugosa al gusto del cliente.</p>
+            </div>
+            <div class="plato-precio">¢3,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Chicharrones</h3>
+                <p class="descripcion">Porción de chicharrones crujientes, carnudos y bien sazonados.</p>
+            </div>
+            <div class="plato-precio">¢4,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Costilla Ahumada</h3>
+                <p class="descripcion">Tierna y jugosa costilla de cerdo ahumada con un sabor espectacular.</p>
+            </div>
+            <div class="plato-precio">¢4,600</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Surtidas</h3>
+                <p class="descripcion">Gran bandeja variada ideal para compartir en grupo o familia.</p>
+            </div>
+            <div class="plato-precio">¢12,000 / ¢15,000 / ¢17,000 / ¢21,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Langosta</h3>
+                <p class="descripcion">La joya marina premium del menú. Preparación especial de la casa.</p>
+            </div>
+            <div class="plato-precio">Depende de la temporada</div>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         HAMBURGUESAS Y BURRITOS
+    ═══════════════════════════════════════════ -->
+    <div class="seccion-titulo" id="hamburguesas">
+        <i class="fa-solid fa-burger"></i>
+        <h2>Hamburguesas y Burritos</h2>
+    </div>
+    <div class="menu-grid">
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Hamburguesa Combo</h3>
+                <p class="descripcion">Hamburguesa clásica deliciosa y perfecta para calmar el antojo rápido.</p>
+            </div>
+            <div class="plato-precio">¢2,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Hamburguesa de Carne Mechada <span class="badge-nuevo">NUEVO</span></h3>
+                <p class="descripcion">Deliciosa hamburguesa preparada con carne mechada y aderezos especiales.</p>
+            </div>
+            <div class="plato-precio">¢2,800</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Hamburguesa Mexicana</h3>
+                <p class="descripcion">Preparada con ingredientes y un sazón de toque azteca exquisito.</p>
+            </div>
+            <div class="plato-precio">¢2,800</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Hamburguesa Krispy</h3>
+                <p class="descripcion">Con un filete de pechuga de pollo premium excelentemente crujiente.</p>
+            </div>
+            <div class="plato-precio">¢3,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Cangreburguer</h3>
+                <p class="descripcion">Una receta divertida y secreta de nuestro menú que te fascinará.</p>
+            </div>
+            <div class="plato-precio">¢2,800</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Hamburguesa De La Casa</h3>
+                <p class="descripcion">Torta de 1/4 lb, tocineta ahumada crujiente, jamón, queso y aderezos especiales.</p>
+            </div>
+            <div class="plato-precio">¢3,800</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Pataburguer</h3>
+                <p class="descripcion">Innovadora hamburguesa donde sustituimos el pan por patacones gigantes dorados.</p>
+            </div>
+            <div class="plato-precio">¢3,800</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Big Cheese</h3>
+                <p class="descripcion">Doble torta de 1/4 lb, doble jamón, doble tocineta y exceso de queso fundido.</p>
+            </div>
+            <div class="plato-precio">¢5,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Hamburguesa de Camarón</h3>
+                <p class="descripcion">Especialidad marina montada con jugosos camarones salteados.</p>
+            </div>
+            <div class="plato-precio">¢4,500</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>La Bichota</h3>
+                <p class="descripcion">La hamburguesa insignia, la más grande y cargada de todo nuestro menú.</p>
+            </div>
+            <div class="plato-precio">¢8,600</div>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         BATIDOS Y HELADOS
+    ═══════════════════════════════════════════ -->
+    <div class="seccion-titulo" id="helados">
+        <i class="fa-solid fa-ice-cream"></i>
+        <h2>Batidos y Helados</h2>
+    </div>
+    <div class="menu-grid">
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Batidos Naturales y Especiales</h3>
+                <p class="descripcion"><strong>Sabores:</strong> Banano, Banano Chocolate, Chocolate, Chocofresa, Mango, Fresa, Fresa Banano, Melón, Mora, Sandía, Piña, Fresa Limón, Chocomaní, Crema, Limón Hierba Buena, Mora/Arándanos/Fresa, Guanábana.</p>
+            </div>
+            <div class="precios-flex">
+                <div class="badge-precio">
+                    <span class="tipo">En Agua</span>
+                    <span class="monto">¢1,500</span>
+                </div>
+                <div class="badge-precio">
+                    <span class="tipo">En Leche</span>
+                    <span class="monto">¢2,200</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Cono Normal</h3>
+                <p class="descripcion">Helado suave clásico servido sobre un cono crujiente tradicional.</p>
+            </div>
+            <div class="plato-precio">¢800</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Cono Azucarado Pequeño</h3>
+                <p class="descripcion">Cono dulce azucarado especial en porción individual pequeña.</p>
+            </div>
+            <div class="plato-precio">¢1,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Cono Azucarado Grande</h3>
+                <p class="descripcion">Cono dulce azucarado waffle en su presentación más grande.</p>
+            </div>
+            <div class="plato-precio">¢2,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Canasta de Helados Pequeña <span class="badge-nuevo">NUEVO</span></h3>
+                <p class="descripcion">Canasta con selección de helados, perfecta para uno.</p>
+            </div>
+            <div class="plato-precio">¢2,000</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Canasta de Helados Grande <span class="badge-nuevo">NUEVO</span></h3>
+                <p class="descripcion">Canasta grande con variedad de helados, ideal para compartir.</p>
+            </div>
+            <div class="plato-precio">¢3,300</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Banana Split</h3>
+                <p class="descripcion">Postre clásico con banano fresco, tres bolas de helado, barquillos, siropes y toppings.</p>
+            </div>
+            <div class="plato-precio">¢2,400</div>
+        </div>
+
+        <div class="plato-tarjeta">
+            <div class="plato-info">
+                <h3>Ensalada de Frutas</h3>
+                <p class="descripcion">Mezcla fresca de frutas seleccionadas picadas con helado y sirope dulce.</p>
+            </div>
+            <div class="plato-precio">¢2,500</div>
+        </div>
+
+    </div>
+
+    <!-- MAPA -->
+    <div class="seccion-titulo">
+        <i class="fa-solid fa-map-location-dot"></i>
+        <h2>Ubicación</h2>
+    </div>
+    <div class="mapa-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1571.879457799015!2d-84.6229554!3d10.8416161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f0abd2b1b9e70b3%3A0x6fe8db0311d19cb5!2sLa%20Comelona%20onde%20Mackoy%20%2C%20el%20Pav%C3%B3n!5e0!3m2!1sen!2scr!4v1718060000000!5m2!1sen!2scr"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+
+</div><!-- /container -->
+
+<!-- BARRA FIJA INFERIOR -->
+<div class="barra-contacto">
+    <div class="contacto-info">
+        <span class="tagline">Pedidos Expreso / SINPE:</span>
+        <span class="telefono">6226 - 4152</span>
+    </div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+        <a href="https://wa.me/50662264152" class="btn-whatsapp-flotante" target="_blank">
+            <i class="fa-brands fa-whatsapp fa-lg"></i> WhatsApp
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61559751075827" target="_blank" class="btn-facebook">
+            <i class="fa-brands fa-facebook-f"></i> Facebook
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
